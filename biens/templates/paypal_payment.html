@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{%load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayPal Payment</title>
+</head>
+<body style="background-image: url('{% static 'images/AdobeStock_45.jpeg' %}'); background-size: cover;">
+    <h1>PayPal Payment</h1>
+    <div id="paypal-button-container"></div>
+
+    <script src="https://www.paypal.com/sdk/js?client-id=AcKVGHGPJUqkvFOiqxGImcbu48mV_Lbuux3d_rmL4du8VX6Y38tpgRBY64d-J0DYuanWiMAE_TZ6KRoB"></script>
+
+    <script>
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                // This function sets up the details of the transaction, including the amount and line item details.
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '00.10' // Replace '10.00' with the amount you want to charge
+                        }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                // This function captures the funds from the transaction.
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                    alert('Transaction completed by ' + details.payer.name.given_name);
+                    // Redirect to a success page
+                    window.location.href = '/payment-success';
+                });
+            },
+            onError: function(err) {
+                // Show an error message to the buyer
+                alert('An error occurred, please try again later.');
+            }
+        }).render('#paypal-button-container');
+    </script>
+</body>
+</html>

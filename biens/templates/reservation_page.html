@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="text-center">Réserver {{ article.nom }}</h1>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'generate_invoice' article.id %}">
+                        {% csrf_token %}
+                        <!-- Champ caché pour stocker l'ID de l'article -->
+                        <input type="hidden" name="article_id" value="{{ article.id }}">
+                        
+                        <div class="form-group">
+                            <label for="id_nom">Nom:</label>
+                            <input type="text" name="nom" id="id_nom" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_email">Email:</label>
+                            <input type="email" name="email" id="id_email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_telephone">Téléphone:</label>
+                            <input type="text" name="telephone" id="id_telephone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_prix">Prix:</label>
+                            <input type="text" name="prix" id="id_prix" class="form-control" value="{{ article.prix }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_modalites_paiement">Modalités de paiement:</label>
+                            <textarea name="modalites_paiement" id="id_modalites_paiement" class="form-control"></textarea>
+                        </div>
+                        <!-- Ajoutez d'autres champs de réservation selon vos besoins -->
+                        <button type="submit" class="btn btn-primary btn-block">Soumettre</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

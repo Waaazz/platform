@@ -1,0 +1,23 @@
+{% extends 'partials/base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow mt-4">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Saisie des articles</h2>
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div class="text-center mt-4">
+                            <button class="btn btn-primary" type="submit">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

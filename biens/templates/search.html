@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h2>Liste de recherche vide </h2>
+    <div class="row">
+        {% for Article in liste_article %}
+        <div class="col-3 col-md-6 col-lg col-xl-3"> 
+          <div class="card mb-2 p-2">
+            {% if Article.image1 %}
+                    <a href="{% url 'detail' Article.id %}">
+                        <img src="{{ Article.image1.url }}" class="card-img-top" alt="Card image cap" style="height: 240px;"/>
+                    </a>
+            {% else %}
+                    <a href="{% url 'detail' Article.id %}">
+                        <img src="{% static 'img/logo.png' %}" class="card-img-top" alt="Card image cap" style="height: 240px;"/>
+                    </a>
+            {% endif %}
+            <div class="card-body" style="height:50">
+              <h5 class="card-title"><a href="{%url 'detail' Article.id %}">{{Article.nom}}</a></h5>
+              <h6 class="card-title"><a>{{Article.prix}} FCFA</a></h6>
+              <p class="card-text">{{Article.description|truncatewords:8}}.</p>
+              <p class="card-text">Publier| il y a {{Article.created_at|timesince}}</p>
+              <div class="d-flex justify-content-between">
+                <a href="{% url 'reservation_page' Article.id %}" class="btn btn-success">Réserver</a>
+                <a href="{%url 'detail' Article.id %}" class="btn btn-success mx-2" data-mdb-ripple-init>Voir Détail</a>
+              </div>
+            </div>
+          </div>
+        </div>   
+      {% endfor %}
+    </div>  
+</div>
+{% endblock %}

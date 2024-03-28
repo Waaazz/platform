@@ -1,0 +1,29 @@
+{% extends 'partials/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2>Liste des articles réservés</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Article</th>
+                            <th>Nom</th>
+                            <th>Date de réservation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in reservations %}
+                            <tr>
+                                <td>{{ reservation.article.nom }}</td>
+                                <td>{{ reservation.nom }}</td>
+                                <td>{{ reservation.date_reservation }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

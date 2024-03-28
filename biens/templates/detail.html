@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h1 class="text-center mt-2">Détail Article</h1>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="{{ Article.image1.url }}" alt="" class="img-fluid mb-3">
+                    {% if Article.image2 %}
+                    <img src="{{ Article.image2.url }}" alt="" class="img-fluid mb-3">
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    {% if Article.image3 %}
+                    <img src="{{ Article.image3.url }}" alt="" class="img-fluid mb-3">
+                    {% endif %}
+                    {% if Article.image4 %}
+                    <img src="{{ Article.image4.url }}" alt="" class="img-fluid mb-3">
+                    {% endif %}
+                </div>
+            </div>
+            <h2>{{ Article.nom }}</h2>
+            <h3>{{ Article.description }}</h3>
+            <h4>{{ Article.prix }} FCFA/JOUR</h4>
+
+            <div class="rating-section">
+                <h5 class="text-info">Notez cet article:</h5>
+                <div class="comments-section">
+                    <ul class="list-unstyled">
+                        {% for note in notes %}
+                        <li class="d-flex justify-content-between align-items-center">
+                            <span class="comment">Commentaire: {{ note.commentaire }}</span>
+                            <span class="note">Note: {{ note.note }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <form action="{% url 'soumettre_note' Article.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <select name="note" class="form-control">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="commentaire" class="form-control" rows="3" placeholder="Ajouter un commentaire"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Soumettre</button>
+                    <a href="{% url 'reservation_page' Article.id %}" class="btn btn-success">Réserver</a>
+                </form>
+            </div>
+        </div>
+    </div>  
+</div> 
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="container-fluid bg-image" style="background-image: url('{% static 'images/AdobeStock_32717349_Preview.jpg' %}');">
+    <h1 class="text-center">Bienvenue sur notre Plateforme de Location de Biens</h1>
+    <div class="container mt-3 mb-5">
+        <div class="row">
+            {% for article in list_articles %}
+            <div class="col-3 col-md-6 col-lg col-xl-3"> 
+                <div class="card mb-2 p-2">
+                    {% if article.image1 %}
+                    <a href="{% url 'detail' article.id %}">
+                        <img src="{{ article.image1.url }}" class="card-img-top" alt="Card image cap" style="height: 240px;"/>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'detail' article.id %}">
+                        <img src="{% static 'img/logo.png' %}" class="card-img-top" alt="Card image cap" style="height: 240px;"/>
+                    </a>
+                    {% endif %}
+                    <div class="card-body" style="height:50">
+                        <h5 class="card-title"><a href="{% url 'detail' article.id %}">{{ article.nom }}</a></h5>  
+                        <h6 class="card-title">{{ article.prix }} FCFA/JOUR</h6>
+                        <p class="card-text">{{ article.description|truncatewords:8 }}.</p>
+                        <p class="card-text">Publié il y a {{ article.created_at|timesince }}</p>
+                        <p class="card-text">
+                            {% if article.is_available %}
+                            <span class="text-success">Disponible</span>
+                            {% else %}
+                            <span class="text-danger">Indisponible</span>
+                            {% endif %}
+                        </p>
+                        <div class="d-flex justify-content-between">
+                            {% if article.is_available %}
+                            <a href="{% url 'reservation_page' article.id %}" class="btn btn-success">Réserver</a>
+                            {% else %}
+                            <button class="btn btn-secondary" disabled>Indisponible</button>
+                            {% endif %}
+                            <a href="{% url 'detail' article.id %}" class="btn btn-success mx-2" data-mdb-ripple-init>Voir Détail</a>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

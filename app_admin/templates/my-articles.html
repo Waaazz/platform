@@ -1,0 +1,49 @@
+{% extends 'partials/base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h2>Mes articles</h2>
+        </div>
+        <div class="col-md-10">
+            <div class="col-md-3">
+                <a href="{% url 'ajouter-article' %}" class="btn btn-warning float-right"><i class="fas fa-plus"></i> Ajouter un article</a>
+            </div>
+            {% if list_articles %}
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="h6">Titre</th>
+                                <th class="h6">Description</th>
+                                <th class="h6">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for article in list_articles %}
+                            <tr>
+                                <td>
+                                    <h6>{{ article }}</h6>
+                                </td>
+                                <td>
+                                    <p>{{ article.description }}</p>
+                                </td>
+                                <td>
+                                    <a href="{% url 'update-article' article.pk %}" class="btn btn-info"><i class="fas fa-edit"></i></a>
+                                    <a href="{% url 'delete-article' article.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% else %}
+            <h3>Vous n'avez pas encore publié d'article.</h3>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

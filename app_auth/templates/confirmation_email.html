@@ -1,0 +1,10 @@
+{% autoescape off %}
+Bonjour {{ user.username }},
+
+Veuillez cliquer sur le lien ci-dessous pour activer votre compte :
+
+{{ confirmation_link }}
+
+Cordialement,
+L'équipe de votre site.
+{% endautoescape %}

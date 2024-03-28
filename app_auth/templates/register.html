@@ -1,0 +1,38 @@
+{%extends 'base.html' %}
+{% load static %}
+{% block title %} Création de compte au blog {% endblock %}
+
+{% block content %}
+
+<div class="container "> 
+    <div class="row mt-5 mb-5">
+        <div class="col-lg-6 shadow p-4">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger text-center"><strong>{{message}}</strong></div>
+        {% endfor %}
+        {% endif %}
+
+        <form action="" method="POST" novalidate>{% csrf_token %}
+            <div class="card"> 
+                <div class="card-header text-center"><i class="fas fa-user-lock"></i> Création de compte</div>
+                <div class="card-body">
+                 {{form}}  
+                 {% if form.captcha.errors %}
+                <div class="alert alert-danger">{{ form.captcha.errors }}</div>
+                {% endif %} 
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary btn-block">Créer le compte</button>
+                </div>     
+            </div>   
+        </form> 
+    </div>
+    <div class="col-lg-6 shadow p-4"> 
+        <img src="{% static 'images/AdobeStock_2.jpeg' %}" alt="" class="img-fluid img-responsive">
+    </div>   
+    </div> 
+</div>
+{% endblock %}
+{% block script%}
+{% endblock %}
