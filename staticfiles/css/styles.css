@@ -1,0 +1,43 @@
+/* Style pour les commentaires */
+.comment {
+    color: blue;
+    font-weight: bold;
+}
+
+/* Style pour les notes */
+.note {
+    color: green;
+}
+
+/* Style pour la liste déroulante de notation */
+.rating-select {
+    background-color: lightyellow;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* Style pour la zone de texte du commentaire */
+.comment-textarea {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Style pour le bouton de soumission */
+.submit-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Style pour le survol du bouton de soumission */
+.submit-button:hover {
+    background-color: #45a049;
+}

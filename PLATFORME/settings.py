@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+
+
+from dotenv import load_dotenv
+import dj_database_url
+
+# Charger les variables d'environnement
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,13 +28,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ds7=tt9c(hrmhvu4&m@hhtqwl#7q_&56j7)-@m(5bcrrum-o71'
+#SECRET_KEY = 'django-insecure-ds7=tt9c(hrmhvu4&m@hhtqwl#7q_&56j7)-@m(5bcrrum-o71'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "changeme")
 
-ALLOWED_HOSTS = []
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
+#ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
 
 # Application definition
 
@@ -52,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'PLATFORME.urls'
@@ -86,6 +98,7 @@ DATABASES = {
         'PASSWORD': '54125637',
         'HOST': 'localhost',  # Ou l'adresse de votre serveur PostgreSQL
         'PORT': '5432',       # Le port par défaut de PostgreSQL est 5432
+        'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
     }
 }
 
@@ -128,6 +141,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR,"media")
 MEDIA_URL = "/media/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'biens','static'),
@@ -139,8 +153,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587  # Port SMTP (peut varier selon votre fournisseur de messagerie)
 EMAIL_USE_TLS = True  # Utilisez TLS pour une connexion sécurisée
-EMAIL_HOST_USER = 'woubiaziz@gmail.com'  # Votre adresse e-mail
-EMAIL_HOST_PASSWORD = 'wenf syxn irol olap'  # Mot de passe de votre adresse e-mail
+#EMAIL_HOST_USER = 'woubiaziz@gmail.com'  # Votre adresse e-mail
+#EMAIL_HOST_PASSWORD = 'wenf syxn irol olap'  # Mot de passe de votre adresse e-mail
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 RECAPTCHA_PUBLIC_KEY = '6Lc2_KMpAAAAANFeygf1PxVsXthp6R7_RwyOA_D9'
 RECAPTCHA_PRIVATE_KEY = '6Lc2_KMpAAAAAJw5VDUe1-OerG_NTwkAzzLt3Hy9'
