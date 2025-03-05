@@ -37,7 +37,12 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "changeme")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost",).split(",")
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "39c7-154-66-167-229.ngrok-free.app"
+]
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
 
 # Application definition
 
@@ -164,7 +169,9 @@ RECAPTCHA_PRIVATE_KEY = '6Lc2_KMpAAAAAJw5VDUe1-OerG_NTwkAzzLt3Hy9'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://39c7-154-66-167-229.ngrok-free.app"
+]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
