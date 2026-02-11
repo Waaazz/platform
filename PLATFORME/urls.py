@@ -1,7 +1,9 @@
+import re
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.static import serve
 from biens.views import (
     home, detail, search, reservation_page, generate_invoice,
     confirmation_page, soumettre_note, paypal_payment, payment_success,
@@ -33,4 +35,12 @@ urlpatterns = [
     path('messagerie/', messagerie, name='messagerie'),
     path('conversation/<int:user_id>/', conversation, name='conversation'),
     path('profil/', profil, name='profil'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+# Servir les fichiers media (uploads) en dev et en production
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    urlpatterns += [
+        re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    ]
