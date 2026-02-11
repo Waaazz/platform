@@ -100,6 +100,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+os.makedirs(os.path.join(MEDIA_ROOT, "article_images"), exist_ok=True)
+os.makedirs(os.path.join(MEDIA_ROOT, "avatars"), exist_ok=True)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'biens', 'static'),
