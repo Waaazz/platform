@@ -1,6 +1,30 @@
-<!-- Pied de page -->
-<footer class="bg-dark text-white text-center py-3">
+<footer class="footer mt-auto">
     <div class="container">
-        <p>&copy; 2024 Plateforme de Location de Biens. Tous droits réservés.</p>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <h5><i class="fas fa-building me-2"></i>LocaBien</h5>
+                <p class="small">Votre plateforme de confiance pour la location de biens au Senegal. Trouvez le bien ideal pour vos besoins.</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h5>Liens utiles</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-1"><a href="{% url 'home' %}"><i class="fas fa-chevron-right me-1 small"></i> Accueil</a></li>
+                    <li class="mb-1"><a href="{% url 'articles_by_category' %}"><i class="fas fa-chevron-right me-1 small"></i> Categories</a></li>
+                    <li class="mb-1"><a href="{% url 'search' %}"><i class="fas fa-chevron-right me-1 small"></i> Recherche</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h5>Contact</h5>
+                <ul class="list-unstyled small">
+                    <li class="mb-1"><i class="fas fa-map-marker-alt me-2"></i> Ouagadougou, BURKINA FASO </li>
+                    <li class="mb-1"><i class="fas fa-envelope me-2"></i> contact@locabien.bf</li>
+                    <li class="mb-1"><i class="fas fa-phone me-2"></i> +226 54 12 56 37</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="text-center small">
+            <p class="mb-0">&copy; 2025 LocaBien. Tous droits reserves.</p>
+        </div>
     </div>
-  </footer>
+</footer>

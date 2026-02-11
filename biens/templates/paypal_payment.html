@@ -1,43 +1,43 @@
-<!DOCTYPE html>
-{%load static%}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PayPal Payment</title>
-</head>
-<body style="background-image: url('{% static 'images/AdobeStock_45.jpeg' %}'); background-size: cover;">
-    <h1>PayPal Payment</h1>
-    <div id="paypal-button-container"></div>
+{% extends 'base.html' %}
+{% block title %}Paiement PayPal - LocaBien{% endblock %}
 
-    <script src="https://www.paypal.com/sdk/js?client-id=AcKVGHGPJUqkvFOiqxGImcbu48mV_Lbuux3d_rmL4du8VX6Y38tpgRBY64d-J0DYuanWiMAE_TZ6KRoB"></script>
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0"><i class="fab fa-paypal me-2"></i>Paiement PayPal</h4>
+                </div>
+                <div class="card-body text-center py-4">
+                    <p class="text-muted mb-4">Cliquez sur le bouton ci-dessous pour finaliser votre paiement en toute securite.</p>
+                    <div id="paypal-button-container" class="mb-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
-    <script>
-        paypal.Buttons({
-            createOrder: function(data, actions) {
-                // This function sets up the details of the transaction, including the amount and line item details.
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: '00.10' // Replace '10.00' with the amount you want to charge
-                        }
-                    }]
-                });
-            },
-            onApprove: function(data, actions) {
-                // This function captures the funds from the transaction.
-                return actions.order.capture().then(function(details) {
-                    // Show a success message to the buyer
-                    alert('Transaction completed by ' + details.payer.name.given_name);
-                    // Redirect to a success page
-                    window.location.href = '/payment-success';
-                });
-            },
-            onError: function(err) {
-                // Show an error message to the buyer
-                alert('An error occurred, please try again later.');
-            }
-        }).render('#paypal-button-container');
-    </script>
-</body>
-</html>
+{% block scripts %}
+<script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}"></script>
+<script>
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: { value: '0.10' }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                window.location.href = '/payment-success/';
+            });
+        },
+        onError: function(err) {
+            alert('Une erreur est survenue. Veuillez reessayer.');
+        }
+    }).render('#paypal-button-container');
+</script>
+{% endblock %}

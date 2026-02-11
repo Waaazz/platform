@@ -1,32 +1,31 @@
-{% extends 'partials/base.html' %}
-{% block title %}Articles reserves{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Mes Reservations - LocaBien{% endblock %}
 
 {% block content %}
 <div class="container my-4">
-    <h2 class="mb-4"><i class="fas fa-calendar-check me-2"></i>Reservations de mes biens</h2>
+    <h2 class="mb-4"><i class="fas fa-calendar-check me-2"></i>Mes Reservations</h2>
 
     {% if reservations %}
     <div class="card border-0 shadow-sm">
         <div class="table-responsive">
-            <table class="table table-hover mb-0 align-middle">
+            <table class="table table-hover mb-0">
                 <thead class="table-light">
                     <tr>
                         <th>Bien</th>
-                        <th>Client</th>
-                        <th>Email</th>
                         <th>Arrivee</th>
                         <th>Depart</th>
                         <th>Total</th>
                         <th>Statut</th>
                         <th>Date</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for reservation in reservations %}
                     <tr>
-                        <td class="fw-bold">{{ reservation.article.nom }}</td>
-                        <td>{{ reservation.nom }}</td>
-                        <td>{{ reservation.email }}</td>
+                        <td>
+                            <a href="{% url 'detail' reservation.article.id %}" class="fw-bold">{{ reservation.article.nom }}</a>
+                        </td>
                         <td>{% if reservation.date_checkin %}{{ reservation.date_checkin|date:"d/m/Y" }}{% else %}-{% endif %}</td>
                         <td>{% if reservation.date_checkout %}{{ reservation.date_checkout|date:"d/m/Y" }}{% else %}-{% endif %}</td>
                         <td class="fw-bold text-primary">{{ reservation.prix_total }} FCFA</td>
@@ -40,6 +39,15 @@
                             {% endif %}
                         </td>
                         <td class="text-muted small">{{ reservation.date_reservation|date:"d/m/Y" }}</td>
+                        <td>
+                            {% if reservation.statut == 'confirmee' %}
+                            <a href="{% url 'annuler_reservation' reservation.id %}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Voulez-vous vraiment annuler cette reservation ?')">
+                                <i class="fas fa-times me-1"></i>Annuler
+                            </a>
+                            {% else %}
+                            <span class="text-muted small">-</span>
+                            {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -49,7 +57,9 @@
     {% else %}
     <div class="text-center py-5">
         <i class="fas fa-calendar fa-3x text-muted mb-3"></i>
-        <h5 class="text-muted">Aucune reservation pour vos biens</h5>
+        <h5 class="text-muted">Aucune reservation</h5>
+        <p class="text-muted">Vous n'avez pas encore effectue de reservation.</p>
+        <a href="{% url 'home' %}" class="btn btn-primary"><i class="fas fa-search me-2"></i>Trouver un bien</a>
     </div>
     {% endif %}
 </div>

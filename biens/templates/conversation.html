@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Conversation avec {{ other_user.username }} - LocaBien{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0">
+                    <a href="{% url 'messagerie' %}" class="text-muted me-2"><i class="fas fa-arrow-left"></i></a>
+                    Conversation avec <strong>{{ other_user.username }}</strong>
+                </h4>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <!-- Messages -->
+                <div class="card-body chat-container" id="chatContainer">
+                    {% for msg in msgs %}
+                    <div class="d-flex {% if msg.sender == user %}justify-content-end{% endif %}">
+                        <div class="chat-bubble {% if msg.sender == user %}sent{% else %}received{% endif %}">
+                            <p class="mb-1">{{ msg.contenu }}</p>
+                            <small class="{% if msg.sender == user %}text-white-50{% else %}text-muted{% endif %}">{{ msg.created_at|date:"d/m H:i" }}</small>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-comments fa-2x text-muted mb-2"></i>
+                        <p class="text-muted">Aucun message. Commencez la conversation !</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Formulaire -->
+                <div class="card-footer bg-white">
+                    <form method="post" class="d-flex gap-2">
+                        {% csrf_token %}
+                        <textarea name="contenu" class="form-control" rows="1" placeholder="Votre message..." required></textarea>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const chatContainer = document.getElementById('chatContainer');
+    if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
+</script>
+{% endblock %}

@@ -1,62 +1,182 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block title %}{{ Article.nom }} - LocaBien{% endblock %}
+
 {% block content %}
-<div class="container">
-    <div class="row">
-        <h1 class="text-center mt-2">Détail Article</h1>
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-6">
-                    <img src="{{ Article.image1.url }}" alt="" class="img-fluid mb-3">
-                    {% if Article.image2 %}
-                    <img src="{{ Article.image2.url }}" alt="" class="img-fluid mb-3">
+<div class="container my-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Accueil</a></li>
+            {% if Article.category %}
+            <li class="breadcrumb-item"><a href="{% url 'articles_by_category' %}?category={{ Article.category.id }}">{{ Article.category.name }}</a></li>
+            {% endif %}
+            <li class="breadcrumb-item active">{{ Article.nom }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <!-- Images Carousel -->
+        <div class="col-lg-7">
+            <div id="articleCarousel" class="carousel slide detail-carousel" data-bs-ride="carousel">
+                <div class="carousel-inner rounded-3 overflow-hidden">
+                    {% if Article.image1 %}
+                    <div class="carousel-item active">
+                        <img src="{{ Article.image1.url }}" class="d-block w-100" alt="{{ Article.nom }}">
+                    </div>
                     {% endif %}
-                </div>
-                <div class="col-md-6">
+                    {% if Article.image2 %}
+                    <div class="carousel-item">
+                        <img src="{{ Article.image2.url }}" class="d-block w-100" alt="{{ Article.nom }}">
+                    </div>
+                    {% endif %}
                     {% if Article.image3 %}
-                    <img src="{{ Article.image3.url }}" alt="" class="img-fluid mb-3">
+                    <div class="carousel-item">
+                        <img src="{{ Article.image3.url }}" class="d-block w-100" alt="{{ Article.nom }}">
+                    </div>
                     {% endif %}
                     {% if Article.image4 %}
-                    <img src="{{ Article.image4.url }}" alt="" class="img-fluid mb-3">
+                    <div class="carousel-item">
+                        <img src="{{ Article.image4.url }}" class="d-block w-100" alt="{{ Article.nom }}">
+                    </div>
                     {% endif %}
                 </div>
-            </div>
-            <h2>{{ Article.nom }}</h2>
-            <h3>{{ Article.description }}</h3>
-            <h4>{{ Article.prix }} FCFA/JOUR</h4>
-
-            <div class="rating-section">
-                <h5 class="text-info">Notez cet article:</h5>
-                <div class="comments-section">
-                    <ul class="list-unstyled">
-                        {% for note in notes %}
-                        <li class="d-flex justify-content-between align-items-center">
-                            <span class="comment">Commentaire: {{ note.commentaire }}</span>
-                            <span class="note">Note: {{ note.note }}</span>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                
-                <form action="{% url 'soumettre_note' Article.id %}" method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <select name="note" class="form-control">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <textarea name="commentaire" class="form-control" rows="3" placeholder="Ajouter un commentaire"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Soumettre</button>
-                    <a href="{% url 'reservation_page' Article.id %}" class="btn btn-success">Réserver</a>
-                </form>
+                <button class="carousel-control-prev" type="button" data-bs-target="#articleCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#articleCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
             </div>
         </div>
-    </div>  
-</div> 
+
+        <!-- Info Card -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h2 class="mb-0">{{ Article.nom }}</h2>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'toggle_favorite' Article.id %}" class="btn btn-outline-danger btn-sm rounded-circle" title="Ajouter aux favoris">
+                            <i class="fas fa-heart{% if not is_favorite %}-o{% endif %}"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    {% if Article.category %}
+                    <span class="badge bg-secondary mb-3"><i class="fas fa-tag me-1"></i>{{ Article.category.name }}</span>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <span class="fs-3 fw-bold text-primary">{{ Article.prix }} FCFA</span>
+                        <span class="text-muted">/ jour</span>
+                    </div>
+
+                    {% if Article.disponible %}
+                    <span class="badge-disponible mb-3 d-inline-block"><i class="fas fa-check-circle me-1"></i>Disponible</span>
+                    {% else %}
+                    <span class="badge-indisponible mb-3 d-inline-block"><i class="fas fa-times-circle me-1"></i>Indisponible</span>
+                    {% endif %}
+
+                    <hr>
+                    <h5>Description</h5>
+                    <p class="text-muted">{{ Article.description }}</p>
+                    <hr>
+
+                    <div class="d-grid gap-2">
+                        {% if Article.disponible %}
+                        <a href="{% url 'reservation_page' Article.id %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-calendar-plus me-2"></i>Reserver maintenant
+                        </a>
+                        {% else %}
+                        <button class="btn btn-secondary btn-lg" disabled>Indisponible</button>
+                        {% endif %}
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'envoyer_message' Article.id %}" class="btn btn-outline-primary">
+                            <i class="fas fa-envelope me-2"></i>Contacter le proprietaire
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Avis et notation -->
+    <div class="row mt-5">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h4 class="mb-4"><i class="fas fa-star me-2 text-warning"></i>Avis et notes</h4>
+
+                    <!-- Formulaire de notation -->
+                    {% if user.is_authenticated %}
+                    <form action="{% url 'soumettre_note' Article.id %}" method="post" class="mb-4 p-3 bg-light rounded">
+                        {% csrf_token %}
+                        <h6 class="mb-3">Donnez votre avis</h6>
+                        <div class="mb-3">
+                            <label class="form-label">Note</label>
+                            <div class="star-rating">
+                                <input type="radio" name="note" value="5" id="star5"><label for="star5"><i class="fas fa-star"></i></label>
+                                <input type="radio" name="note" value="4" id="star4"><label for="star4"><i class="fas fa-star"></i></label>
+                                <input type="radio" name="note" value="3" id="star3" checked><label for="star3"><i class="fas fa-star"></i></label>
+                                <input type="radio" name="note" value="2" id="star2"><label for="star2"><i class="fas fa-star"></i></label>
+                                <input type="radio" name="note" value="1" id="star1"><label for="star1"><i class="fas fa-star"></i></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <textarea name="commentaire" class="form-control" rows="3" placeholder="Votre commentaire..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-paper-plane me-1"></i>Soumettre</button>
+                    </form>
+                    {% endif %}
+
+                    <!-- Liste des avis -->
+                    {% for note in notes %}
+                    <div class="d-flex mb-3 pb-3 border-bottom">
+                        <div class="flex-shrink-0">
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <div class="ms-3 flex-grow-1">
+                            <div class="d-flex justify-content-between">
+                                <strong>{{ note.utilisateur.username }}</strong>
+                                <div class="stars-display">
+                                    {% for i in "12345" %}
+                                    <i class="fas fa-star {% if forloop.counter <= note.note %}active{% endif %}"></i>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <p class="text-muted mb-0 mt-1">{{ note.commentaire }}</p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted text-center"><i class="fas fa-comment-slash me-1"></i>Aucun avis pour le moment.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Biens similaires -->
+        <div class="col-lg-4">
+            <h5 class="mb-3"><i class="fas fa-th-list me-2"></i>Biens similaires</h5>
+            {% for art in aer %}
+            <div class="card property-card mb-3">
+                {% if art.image1 %}
+                <a href="{% url 'detail' art.id %}">
+                    <img src="{{ art.image1.url }}" class="card-img-top" alt="{{ art.nom }}" style="height:150px;">
+                </a>
+                {% endif %}
+                <div class="card-body py-2">
+                    <h6 class="card-title mb-1"><a href="{% url 'detail' art.id %}">{{ art.nom }}</a></h6>
+                    <span class="price-tag small">{{ art.prix }} FCFA/jour</span>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted small">Aucun bien similaire.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

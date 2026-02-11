@@ -1,40 +1,55 @@
-<!-- Barre de navigation Bootstrap --> 
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <i class="fas fa-building me-2"></i>LocaBien
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <i class="fas fa-bars text-white"></i>
+        </button>
 
-<nav class="navbar navbar-expand-lg bg-dark ">
-  <a class="navbar-brand text-white" href="{% url 'home' %}">Acceuil</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home me-1"></i> Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'articles_by_category' %}"><i class="fas fa-th-large me-1"></i> Categories</a>
+                </li>
+            </ul>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link  text-white" href="{% url 'dashboard' %}">Profil</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="{% url 'articles_by_category' %}">Catégories</a>
-      </li>
-    </ul>
+            <!-- Recherche -->
+            <form class="navbar-search d-flex me-3" action="{% url 'search' %}" method="GET">
+                <input class="form-control me-2" type="search" name="q" placeholder="Rechercher un bien..." aria-label="Recherche">
+                <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
+            </form>
+
+            <!-- User menu -->
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle me-1"></i> {{ user.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="{% url 'profil' %}"><i class="fas fa-id-card me-2"></i>Mon Profil</a></li>
+                        <li><a class="dropdown-item" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i>Tableau de bord</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'mes_favoris' %}"><i class="fas fa-heart me-2 text-danger"></i>Mes Favoris</a></li>
+                        <li><a class="dropdown-item" href="{% url 'mes_reservations' %}"><i class="fas fa-calendar-check me-2 text-success"></i>Mes Reservations</a></li>
+                        <li><a class="dropdown-item" href="{% url 'messagerie' %}"><i class="fas fa-envelope me-2 text-primary"></i>Messages</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Deconnexion</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-light btn-sm me-2" href="{% url 'login-blog' %}"><i class="fas fa-sign-in-alt me-1"></i> Connexion</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary btn-sm" href="{% url 'register' %}"><i class="fas fa-user-plus me-1"></i> Inscription</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
-  {% if user.is_authenticated %}
-    <a href="{% url 'logout' %}" class="btn btn-info mr-2">Déconnexion</a>
-    {% else %}
-    <a href="{% url 'register' %}" class="btn btn-info">Inscription</a>
-    <a href="{% url 'login-blog' %}" class="btn btn-info mr-2">Connexion</a> 
-    {% endif %}
-
-    <form class="form-inline ml-auto" action="{% url 'search' %}">
-      <div class="md-form my-0">
-        <input class="form-control mr-sm-2 " type="text" placeholder="Recherche" aria-label="Search" name="Article">
-      </div>
-    </form>
 </nav>
-
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Bootstrap CSS -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

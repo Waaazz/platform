@@ -1,49 +1,74 @@
 {% extends 'partials/base.html' %}
-{% block content %}
+{% block title %}Mes articles{% endblock %}
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <h2>Mes articles</h2>
-        </div>
-        <div class="col-md-10">
-            <div class="col-md-3">
-                <a href="{% url 'ajouter-article' %}" class="btn btn-warning float-right"><i class="fas fa-plus"></i> Ajouter un article</a>
-            </div>
-            {% if list_articles %}
-            <div class="card">
-                <div class="card-body">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th class="h6">Titre</th>
-                                <th class="h6">Description</th>
-                                <th class="h6">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for article in list_articles %}
-                            <tr>
-                                <td>
-                                    <h6>{{ article }}</h6>
-                                </td>
-                                <td>
-                                    <p>{{ article.description }}</p>
-                                </td>
-                                <td>
-                                    <a href="{% url 'update-article' article.pk %}" class="btn btn-info"><i class="fas fa-edit"></i></a>
-                                    <a href="{% url 'delete-article' article.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            {% else %}
-            <h3>Vous n'avez pas encore publié d'article.</h3>
-            {% endif %}
+{% block content %}
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0"><i class="fas fa-list me-2"></i>Mes articles</h2>
+        <a href="{% url 'ajouter-article' %}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Ajouter un article
+        </a>
+    </div>
+
+    {% if list_articles %}
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Image</th>
+                        <th>Nom</th>
+                        <th>Categorie</th>
+                        <th>Prix/jour</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for article in list_articles %}
+                    <tr>
+                        <td>
+                            {% if article.image1 %}
+                            <img src="{{ article.image1.url }}" alt="" class="rounded" style="width:60px;height:45px;object-fit:cover;">
+                            {% else %}
+                            <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width:60px;height:45px;">
+                                <i class="fas fa-image text-muted"></i>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'detail' article.pk %}" class="fw-bold">{{ article.nom }}</a>
+                        </td>
+                        <td><span class="badge bg-secondary">{{ article.category }}</span></td>
+                        <td class="fw-bold text-primary">{{ article.prix }} FCFA</td>
+                        <td>
+                            {% if article.disponible %}
+                            <span class="badge-disponible">Disponible</span>
+                            {% else %}
+                            <span class="badge-indisponible">Indisponible</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'update-article' article.pk %}" class="btn btn-outline-primary btn-sm me-1" title="Modifier">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'delete-article' article.pk %}" class="btn btn-outline-danger btn-sm" title="Supprimer">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+        <h5 class="text-muted">Aucun article publie</h5>
+        <p class="text-muted">Commencez par ajouter votre premier bien a louer.</p>
+        <a href="{% url 'ajouter-article' %}" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Ajouter un article</a>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

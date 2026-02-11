@@ -54,11 +54,9 @@ def register(request):
                 messages.error(request, "Ce nom d'utilisateur existe déjà.")
                 return render(request, 'register.html', {'form': form})
 
-            # Création de l'utilisateur mais pas encore activé
+            # Création de l'utilisateur
             user = User.objects.create_user(username=username, email=email, password=pwd)
-            user.is_active = False
-            user.save()
-            
+
             # Générer le lien de confirmation
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = account_activation_token.make_token(user)
@@ -76,7 +74,7 @@ def register(request):
                 message,
                 settings.EMAIL_HOST_USER,
                 [email],
-                fail_silently=False,
+                fail_silently=True,
             )
 
             return render(request, 'registration_success.html', {'user': request.user})  # Passer le nom d'utilisateur au contexte

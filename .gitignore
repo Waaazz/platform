@@ -1,2 +1,40 @@
-*.pyc
+# Virtual environments
+.venvp/
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Environment variables
 .env
+
+# Database
+db.sqlite3
+
+# Media files (user uploads)
+media/
+
+# Static files collected
+staticfiles/
+
+# Logs
+logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code
+.claude/

@@ -1,43 +1,421 @@
-/* Style pour les commentaires */
-.comment {
-    color: blue;
-    font-weight: bold;
+/* ============================================
+   LocaBien - Design System
+   Bootstrap 5.3 + Custom Variables
+   ============================================ */
+
+:root {
+    --primary: #2563EB;
+    --primary-dark: #1D4ED8;
+    --secondary: #64748B;
+    --dark: #1E293B;
+    --dark-light: #334155;
+    --success: #059669;
+    --success-light: #D1FAE5;
+    --warning: #F59E0B;
+    --danger: #DC2626;
+    --bg-light: #F8FAFC;
+    --bg-card: #FFFFFF;
+    --text-primary: #1E293B;
+    --text-secondary: #64748B;
+    --border-color: #E2E8F0;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+    --radius: 0.5rem;
+    --radius-lg: 0.75rem;
+    --transition: all 0.2s ease;
 }
 
-/* Style pour les notes */
-.note {
-    color: green;
+/* ---- Global ---- */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Style pour la liste déroulante de notation */
-.rating-select {
-    background-color: lightyellow;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 5px;
+main {
+    flex: 1;
 }
 
-/* Style pour la zone de texte du commentaire */
-.comment-textarea {
-    width: 100%;
-    padding: 5px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: var(--transition);
+}
+a:hover {
+    color: var(--primary-dark);
 }
 
-/* Style pour le bouton de soumission */
-.submit-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
+/* ---- Navbar ---- */
+.navbar-custom {
+    background-color: var(--dark) !important;
+    box-shadow: var(--shadow-md);
+}
+.navbar-custom .navbar-brand {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #fff !important;
+}
+.navbar-custom .navbar-brand i {
+    color: var(--primary);
+}
+.navbar-custom .nav-link {
+    color: rgba(255,255,255,0.8) !important;
+    font-weight: 400;
+    transition: var(--transition);
+    padding: 0.5rem 1rem;
+}
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link.active {
+    color: #fff !important;
+}
+.navbar-custom .dropdown-menu {
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius);
+}
+.navbar-search .form-control {
+    border-radius: 2rem;
+    padding-left: 1rem;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+.navbar-search .form-control::placeholder {
+    color: rgba(255,255,255,0.5);
+}
+.navbar-search .form-control:focus {
+    background: rgba(255,255,255,0.15);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.3);
+    color: #fff;
+}
+.navbar-search .btn {
+    border-radius: 2rem;
 }
 
-/* Style pour le survol du bouton de soumission */
-.submit-button:hover {
-    background-color: #45a049;
+/* ---- Hero Section ---- */
+.hero-section {
+    background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+    color: #fff;
+    padding: 4rem 0;
+    margin-bottom: 2rem;
+}
+.hero-section h1 {
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+.hero-section p {
+    font-size: 1.15rem;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+}
+.hero-search .form-control {
+    border-radius: 2rem 0 0 2rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+}
+.hero-search .btn {
+    border-radius: 0 2rem 2rem 0;
+    padding: 0.75rem 1.5rem;
+}
+
+/* ---- Property Cards ---- */
+.property-card {
+    border: none;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    height: 100%;
+}
+.property-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+.property-card .card-img-top {
+    height: 220px;
+    object-fit: cover;
+}
+.property-card .card-body {
+    padding: 1.25rem;
+}
+.property-card .card-title {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+.property-card .card-title a {
+    color: var(--text-primary);
+}
+.property-card .card-title a:hover {
+    color: var(--primary);
+}
+.property-card .price-tag {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+.property-card .card-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Badge dispo */
+.badge-disponible {
+    background-color: var(--success-light);
+    color: var(--success);
+    font-weight: 500;
+    padding: 0.35em 0.75em;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+}
+.badge-indisponible {
+    background-color: #FEE2E2;
+    color: var(--danger);
+    font-weight: 500;
+    padding: 0.35em 0.75em;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+}
+
+/* Favorite button */
+.btn-favorite {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    z-index: 2;
+    box-shadow: var(--shadow-sm);
+}
+.btn-favorite:hover {
+    background: #fff;
+    transform: scale(1.1);
+}
+.btn-favorite .fa-heart {
+    color: #ccc;
+    font-size: 1rem;
+}
+.btn-favorite.active .fa-heart,
+.btn-favorite:hover .fa-heart {
+    color: var(--danger);
+}
+
+/* ---- Category pills ---- */
+.category-pills .btn {
+    border-radius: 2rem;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: var(--transition);
+}
+.category-pills .btn-outline-primary {
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+}
+.category-pills .btn-outline-primary:hover,
+.category-pills .btn-outline-primary.active {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+/* ---- Star Rating ---- */
+.star-rating {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    gap: 0.15rem;
+}
+.star-rating input {
+    display: none;
+}
+.star-rating label {
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #D1D5DB;
+    transition: color 0.15s;
+}
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+    color: var(--warning);
+}
+.stars-display .fa-star {
+    color: #D1D5DB;
+    font-size: 0.9rem;
+}
+.stars-display .fa-star.active {
+    color: var(--warning);
+}
+
+/* ---- Carousel ---- */
+.detail-carousel .carousel-item img {
+    height: 450px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+}
+
+/* ---- Form styles ---- */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(37,99,235,0.15);
+}
+
+/* ---- Auth cards ---- */
+.auth-card {
+    max-width: 480px;
+    margin: 0 auto;
+    border: none;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+.auth-card .card-header {
+    background: var(--primary);
+    color: #fff;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+    padding: 1.25rem;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+    border: none;
+}
+
+/* ---- Pagination ---- */
+.pagination .page-link {
+    color: var(--primary);
+    border-color: var(--border-color);
+    border-radius: var(--radius) !important;
+    margin: 0 0.15rem;
+    transition: var(--transition);
+}
+.pagination .page-link:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+.pagination .page-item.active .page-link {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+/* ---- Chat / Messagerie ---- */
+.chat-bubble {
+    max-width: 75%;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    margin-bottom: 0.75rem;
+    word-wrap: break-word;
+}
+.chat-bubble.sent {
+    background-color: var(--primary);
+    color: #fff;
+    margin-left: auto;
+    border-bottom-right-radius: 0.25rem;
+}
+.chat-bubble.received {
+    background-color: #E2E8F0;
+    color: var(--text-primary);
+    margin-right: auto;
+    border-bottom-left-radius: 0.25rem;
+}
+.chat-container {
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+/* ---- Footer ---- */
+.footer {
+    background-color: var(--dark);
+    color: rgba(255,255,255,0.7);
+    padding: 3rem 0 1.5rem;
+}
+.footer h5 {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+.footer a {
+    color: rgba(255,255,255,0.6);
+    transition: var(--transition);
+}
+.footer a:hover {
+    color: #fff;
+}
+.footer hr {
+    border-color: rgba(255,255,255,0.1);
+}
+
+/* ---- Alerts slideDown ---- */
+.alert-dismissible {
+    animation: slideDown 0.3s ease-out;
+}
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Admin sidebar ---- */
+.admin-sidebar {
+    background-color: var(--dark);
+    min-height: calc(100vh - 56px);
+    padding-top: 1.5rem;
+}
+.admin-sidebar .nav-link {
+    color: rgba(255,255,255,0.7);
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius);
+    margin-bottom: 0.25rem;
+    transition: var(--transition);
+}
+.admin-sidebar .nav-link:hover,
+.admin-sidebar .nav-link.active {
+    background-color: rgba(255,255,255,0.1);
+    color: #fff;
+}
+.admin-sidebar .nav-link i {
+    width: 1.5rem;
+    text-align: center;
+    margin-right: 0.5rem;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2.5rem 0;
+    }
+    .hero-section h1 {
+        font-size: 1.8rem;
+    }
+    .property-card .card-img-top {
+        height: 180px;
+    }
+    .detail-carousel .carousel-item img {
+        height: 280px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section h1 {
+        font-size: 1.5rem;
+    }
+    .hero-search .form-control {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
 }

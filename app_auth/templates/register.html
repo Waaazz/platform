@@ -1,38 +1,73 @@
-{%extends 'base.html' %}
+{% extends 'base.html' %}
 {% load static %}
-{% block title %} Création de compte au blog {% endblock %}
+{% block title %}Inscription - LocaBien{% endblock %}
 
 {% block content %}
-
-<div class="container "> 
-    <div class="row mt-5 mb-5">
-        <div class="col-lg-6 shadow p-4">
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-danger text-center"><strong>{{message}}</strong></div>
-        {% endfor %}
-        {% endif %}
-
-        <form action="" method="POST" novalidate>{% csrf_token %}
-            <div class="card"> 
-                <div class="card-header text-center"><i class="fas fa-user-lock"></i> Création de compte</div>
-                <div class="card-body">
-                 {{form}}  
-                 {% if form.captcha.errors %}
-                <div class="alert alert-danger">{{ form.captcha.errors }}</div>
-                {% endif %} 
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card auth-card">
+                <div class="card-header">
+                    <i class="fas fa-user-plus me-2"></i>Creer un compte
                 </div>
-                <div class="card-footer">
-                    <button class="btn btn-primary btn-block">Créer le compte</button>
-                </div>     
-            </div>   
-        </form> 
+                <div class="card-body p-4">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Nom d'utilisateur</label>
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                            <div class="text-danger small mt-1">{{ form.username.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label">Adresse e-mail</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                            <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_pwd" class="form-label">Mot de passe</label>
+                            {{ form.pwd }}
+                            {% if form.pwd.errors %}
+                            <div class="text-danger small mt-1">{{ form.pwd.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_pwd_confirmation" class="form-label">Confirmer le mot de passe</label>
+                            {{ form.pwd_confirmation }}
+                            {% if form.pwd_confirmation.errors %}
+                            <div class="text-danger small mt-1">{{ form.pwd_confirmation.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.captcha }}
+                            {% if form.captcha.errors %}
+                            <div class="text-danger small mt-1">{{ form.captcha.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-user-plus me-2"></i>Creer le compte
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center bg-white border-0 pb-4">
+                    <p class="mb-0">Deja un compte ? <a href="{% url 'login-blog' %}" class="fw-bold">Se connecter</a></p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-lg-6 shadow p-4"> 
-        <img src="{% static 'images/AdobeStock_2.jpeg' %}" alt="" class="img-fluid img-responsive">
-    </div>   
-    </div> 
 </div>
-{% endblock %}
-{% block script%}
 {% endblock %}

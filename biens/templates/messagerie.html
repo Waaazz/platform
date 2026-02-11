@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Messagerie - LocaBien{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4"><i class="fas fa-envelope me-2"></i>Messagerie</h2>
+
+    <ul class="nav nav-tabs mb-4" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#recus" type="button">
+                <i class="fas fa-inbox me-1"></i>Recus <span class="badge bg-primary ms-1">{{ received|length }}</span>
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#envoyes" type="button">
+                <i class="fas fa-paper-plane me-1"></i>Envoyes <span class="badge bg-secondary ms-1">{{ sent|length }}</span>
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- Recus -->
+        <div class="tab-pane fade show active" id="recus">
+            {% for msg in received %}
+            <div class="card border-0 shadow-sm mb-2 {% if not msg.lu %}border-start border-primary border-3{% endif %}">
+                <div class="card-body py-3">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <strong>{{ msg.sender.username }}</strong>
+                            {% if msg.article %}
+                            <span class="text-muted small ms-2">re: {{ msg.article.nom }}</span>
+                            {% endif %}
+                            {% if not msg.lu %}<span class="badge bg-primary ms-2">Nouveau</span>{% endif %}
+                        </div>
+                        <small class="text-muted">{{ msg.created_at|timesince }}</small>
+                    </div>
+                    <p class="text-muted mb-2 mt-1">{{ msg.contenu|truncatewords:30 }}</p>
+                    <a href="{% url 'conversation' msg.sender.id %}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-reply me-1"></i>Repondre
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="text-center py-5">
+                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">Aucun message recu</h5>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Envoyes -->
+        <div class="tab-pane fade" id="envoyes">
+            {% for msg in sent %}
+            <div class="card border-0 shadow-sm mb-2">
+                <div class="card-body py-3">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <span class="text-muted">A :</span> <strong>{{ msg.receiver.username }}</strong>
+                            {% if msg.article %}
+                            <span class="text-muted small ms-2">re: {{ msg.article.nom }}</span>
+                            {% endif %}
+                        </div>
+                        <small class="text-muted">{{ msg.created_at|timesince }}</small>
+                    </div>
+                    <p class="text-muted mb-2 mt-1">{{ msg.contenu|truncatewords:30 }}</p>
+                    <a href="{% url 'conversation' msg.receiver.id %}" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-comments me-1"></i>Voir conversation
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="text-center py-5">
+                <i class="fas fa-paper-plane fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">Aucun message envoye</h5>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

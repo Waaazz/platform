@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Envoyer un message - LocaBien{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'detail' article.id %}">{{ article.nom }}</a></li>
+                    <li class="breadcrumb-item active">Envoyer un message</li>
+                </ol>
+            </nav>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-envelope me-2"></i>Contacter le proprietaire</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-light border mb-3">
+                        <small class="text-muted">A propos de :</small>
+                        <strong>{{ article.nom }}</strong> - {{ article.prix }} FCFA/jour
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_contenu" class="form-label">Votre message</label>
+                            {{ form.contenu }}
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2"></i>Envoyer
+                            </button>
+                            <a href="{% url 'detail' article.id %}" class="btn btn-outline-secondary">Annuler</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

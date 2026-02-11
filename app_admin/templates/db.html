@@ -1,10 +1,47 @@
-{% extends 'partials/base.html'%}
+{% extends 'partials/base.html' %}
+{% block title %}Tableau de bord{% endblock %}
+
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Tableau de bord</h2>
+<div class="container my-4">
+    <h2 class="mb-4"><i class="fas fa-tachometer-alt me-2"></i>Tableau de bord</h2>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center p-4">
+                <div class="mb-3">
+                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width:60px;height:60px;">
+                        <i class="fas fa-list text-primary fs-4"></i>
+                    </div>
+                </div>
+                <h5>Mes articles</h5>
+                <p class="text-muted small">Gerez vos biens publies</p>
+                <a href="{% url 'my-articles' %}" class="btn btn-outline-primary btn-sm">Voir mes articles</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center p-4">
+                <div class="mb-3">
+                    <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width:60px;height:60px;">
+                        <i class="fas fa-calendar-check text-success fs-4"></i>
+                    </div>
+                </div>
+                <h5>Reservations</h5>
+                <p class="text-muted small">Suivez les reservations de vos biens</p>
+                <a href="{% url 'articles_reserves' %}" class="btn btn-outline-success btn-sm">Voir les reservations</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center p-4">
+                <div class="mb-3">
+                    <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width:60px;height:60px;">
+                        <i class="fas fa-plus-circle text-warning fs-4"></i>
+                    </div>
+                </div>
+                <h5>Ajouter un bien</h5>
+                <p class="text-muted small">Publiez un nouveau bien a louer</p>
+                <a href="{% url 'ajouter-article' %}" class="btn btn-outline-warning btn-sm">Ajouter</a>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Mon Profil - LocaBien{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h2 class="mb-4"><i class="fas fa-id-card me-2"></i>Mon Profil</h2>
+
+            <div class="row g-4">
+                <!-- Info utilisateur -->
+                <div class="col-md-4 text-center">
+                    <div class="card border-0 shadow-sm p-4">
+                        {% if profile.avatar %}
+                        <img src="{{ profile.avatar.url }}" class="rounded-circle mx-auto mb-3" style="width:120px;height:120px;object-fit:cover;" alt="Avatar">
+                        {% else %}
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width:120px;height:120px;">
+                            <i class="fas fa-user fa-3x"></i>
+                        </div>
+                        {% endif %}
+                        <h4>{{ user.username }}</h4>
+                        <p class="text-muted">{{ user.email }}</p>
+                        {% if profile.ville %}
+                        <p class="text-muted small"><i class="fas fa-map-marker-alt me-1"></i>{{ profile.ville }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Formulaire profil -->
+                <div class="col-md-8">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Modifier mon profil</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="id_telephone" class="form-label">Telephone</label>
+                                    {{ form.telephone }}
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_adresse" class="form-label">Adresse</label>
+                                    {{ form.adresse }}
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_ville" class="form-label">Ville</label>
+                                    {{ form.ville }}
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_avatar" class="form-label">Photo de profil</label>
+                                    <input type="file" class="form-control" name="avatar" accept="image/*">
+                                    {% if profile.avatar %}
+                                    <small class="text-muted">Actuel : {{ profile.avatar.name }}</small>
+                                    {% endif %}
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_bio" class="form-label">Bio</label>
+                                    {{ form.bio }}
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Enregistrer
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

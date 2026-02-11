@@ -1,0 +1,30 @@
+databases:
+  - name: locabien-db
+    plan: free
+    databaseName: locabien
+    user: locabien
+
+services:
+  - type: web
+    name: locabien
+    plan: free
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn PLATFORME.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: locabien-db
+          property: connectionString
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: PYTHON_VERSION
+        value: "3.10.0"
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: RECAPTCHA_PUBLIC_KEY
+        sync: false
+      - key: RECAPTCHA_PRIVATE_KEY
+        sync: false
