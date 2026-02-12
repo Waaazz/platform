@@ -6,9 +6,6 @@ pip install -r requirements.txt
 python manage.py collectstatic --noinput
 python manage.py migrate
 
-# Créer le dossier media pour les uploads
-mkdir -p media/article_images media/avatars
-
 # Créer les catégories par défaut
 python manage.py shell -c "
 from biens.models import Category

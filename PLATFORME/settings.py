@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary',
+    'cloudinary_storage',
     'biens',
     'django_extensions',
     'app_auth',
@@ -100,8 +102,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
-os.makedirs(os.path.join(MEDIA_ROOT, "article_images"), exist_ok=True)
-os.makedirs(os.path.join(MEDIA_ROOT, "avatars"), exist_ok=True)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'biens', 'static'),
@@ -109,10 +109,17 @@ STATICFILES_DIRS = [
 
 BASE_URL = os.getenv("BASE_URL", "http://127.0.0.1:8000")
 
-# WhiteNoise storage for compressed static files
+# Cloudinary (stockage media persistant)
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME', ''),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY', ''),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET', ''),
+}
+
+# Storage: Cloudinary pour les media, WhiteNoise pour les static
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
