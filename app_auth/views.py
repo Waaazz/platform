@@ -1,3 +1,6 @@
+import logging
+import threading
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -8,11 +11,11 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
-from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.messages import SUCCESS
 from .tokens import account_activation_token
+
+logger = logging.getLogger(__name__)
 
 def login_blog(request):
     if request.method == "POST":
@@ -57,25 +60,32 @@ def register(request):
             # Création de l'utilisateur
             user = User.objects.create_user(username=username, email=email, password=pwd)
 
-            # Générer le lien de confirmation
-            uid = urlsafe_base64_encode(force_bytes(user.pk))
-            token = account_activation_token.make_token(user)
-            confirmation_link = reverse('confirm-registration', kwargs={'uidb64': uid, 'token': token})
+            # Envoyer l'e-mail de confirmation en arrière-plan
+            if getattr(settings, 'EMAIL_HOST_USER', None):
+                try:
+                    uid = urlsafe_base64_encode(force_bytes(user.pk))
+                    token = account_activation_token.make_token(user)
+                    confirmation_link = reverse('confirm-registration', kwargs={'uidb64': uid, 'token': token})
 
-            # Rendre le modèle HTML avec le contexte approprié
-            message = render_to_string('confirmation_email.html', {
-                'user': user,
-                'confirmation_link': request.build_absolute_uri(confirmation_link),
-            })
+                    message = render_to_string('confirmation_email.html', {
+                        'user': user,
+                        'confirmation_link': request.build_absolute_uri(confirmation_link),
+                    })
 
-            # Envoi de l'e-mail
-            send_mail(
-                'Confirmation d\'inscription',
-                message,
-                settings.EMAIL_HOST_USER,
-                [email],
-                fail_silently=True,
-            )
+                    # Envoi en arrière-plan pour ne pas bloquer la réponse
+                    threading.Thread(
+                        target=send_mail,
+                        args=(
+                            'Confirmation d\'inscription',
+                            message,
+                            settings.EMAIL_HOST_USER,
+                            [email],
+                        ),
+                        kwargs={'fail_silently': True},
+                        daemon=True,
+                    ).start()
+                except Exception:
+                    logger.warning("Impossible d'envoyer l'email de confirmation à %s", email)
 
             return render(request, 'registration_success.html', {'user': request.user})  # Passer le nom d'utilisateur au contexte
         else:
