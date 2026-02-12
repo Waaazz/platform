@@ -69,7 +69,6 @@ def search(request):
     })
 
 
-@login_required
 def reservation_page(request, article_id):
     article = get_object_or_404(Article, id=article_id)
     form = ReservationForm()
@@ -82,7 +81,6 @@ def confirmation_page(request, reservation_id):
     return render(request, 'confirmation_page.html', {'reservation': reservation})
 
 
-@login_required
 def generate_invoice(request, article_id):
     article = get_object_or_404(Article, id=article_id)
     if request.method == 'POST':
@@ -95,7 +93,7 @@ def generate_invoice(request, article_id):
 
             reservation = Reservation(
                 article=article,
-                user=request.user,
+                user=request.user if request.user.is_authenticated else None,
                 nom=form.cleaned_data['nom'],
                 email=form.cleaned_data['email'],
                 telephone=form.cleaned_data['telephone'],
